@@ -23,7 +23,8 @@
         "symfony/validator": "~2.3",
         "doctrine/dbal": "2.*",
         "symfony/doctrine-bridge": "2.*",
-        "dflydev/doctrine-orm-service-provider": "1.0.*@dev"
+        "dflydev/doctrine-orm-service-provider": "1.0.*@dev",
+        "jasongrimes/silex-simpleuser": "~2.0"
     },
     "autoload": {
         "psr-0": { "": "src/" }

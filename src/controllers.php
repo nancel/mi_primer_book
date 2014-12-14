@@ -32,18 +32,18 @@ $app->error(function (\Exception $e, $code) use ($app) {
 });
 
 $app->get('/book/{id}', function (Silex\Application $app, $id) use ($app) {
-   $images = glob($app['upload_folder'] . '/' . $id . '/*');
+    $images = glob($app['upload_folder'] . '/' . $id . '/*');
 
-    $out = '<html><body>';
+    $images_path = array();
 
     foreach( $images as $img )
     {
-        $out .= '<img src="/index_dev.php/book/img/' . $id . '/' . basename($img) . '"><br><br>';
+        array_push($images_path, '/index_dev.php/book/img/' . $id . '/' . basename($img));    
     }
 
-    $out .= '</body></html>';
-
-    return $out;
+    return $app['twig']->render('book.twig', array(
+        'images' => $images_path
+    ));
 });
 
 $app->get('/book/img/{id}/{name}', function($id, $name, Request $request ) use ( $app ) {

@@ -24,14 +24,15 @@ $simpleUserProvider = new UserServiceProvider();
 $app->register($simpleUserProvider);
 
 $app['security.firewalls'] = array(
-    /* // Ensure that the login page is accessible to all, if you set anonymous => false below.
+    // Ensure that the login page is accessible to all, if you set anonymous => false below.
     'login' => array(
         'pattern' => '^/user/login$',
-    ), */
+    ),
+    'register' => array(
+        'pattern' => '^/user/register$',
+    ),
     'secured_area' => array(
-        'pattern' => '^.*$',
-        'anonymous' => true,
-        'remember_me' => array(),
+        'pattern' => '^/user/',
         'form' => array(
             'login_path' => '/user/login',
             'check_path' => '/user/login_check',
@@ -40,7 +41,7 @@ $app['security.firewalls'] = array(
             'logout_path' => '/user/logout',
         ),
         'users' => $app->share(function($app) { return $app['user.manager']; }),
-    ),
+    )
 );
 
 $app['swiftmailer.options'] = array();

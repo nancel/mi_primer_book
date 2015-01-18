@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Entity\Book;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
@@ -31,22 +32,70 @@ $app->error(function (\Exception $e, $code) use ($app) {
     return new Response($app['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
 });
 
-$app->get('/book/{id}', function (Silex\Application $app, $id) use ($app) {
+$app->get('user/books', function () use ($app){
+
+    $entity_manager = $app["orm.em"];
+
+    if ($app['security']->isGranted('ROLE_ADMIN')) {
+        $books = $entity_manager->getRepository("Entity\Book")->findAll();
+    }
+    else {
+        $token = $app['security']->getToken();
+        $user = $token->getUser();
+
+        $books = $entity_manager->getRepository("Entity\Book")->findBy(array('user_id' => $user->getId()));
+    }    
+
+    return $app['twig']->render('books.twig', array("books"=>$books));
+})
+->bind('books')
+;
+
+$app->get('user/book/{id}', function (Silex\Application $app, $id) use ($app) {
     $images = glob($app['upload_folder'] . '/' . $id . '/*');
 
-    $images_path = array();
+    $images_data = array();
 
     foreach( $images as $img )
     {
-        array_push($images_path, '/index_dev.php/book/img/' . $id . '/' . basename($img));    
+        $image = array(
+            'path' => '/user/book/img/' . $id . '/' . basename($img),
+            'name' => basename($img)
+        );
+
+        array_push($images_data, $image);    
     }
 
     return $app['twig']->render('book.twig', array(
-        'images' => $images_path
+        'images' => $images_data
     ));
+})
+->bind('book')
+;
+
+$app->post('user/bookadd', function (Request $request) use ($app) {
+
+    $book = new Book();
+    $book->name = $request->get('name');
+    $book->path = $request->get('path');
+    $book->user_id = 1;
+
+    $entity_manager = $app["orm.em"];
+    $entity_manager->persist($book);
+    $entity_manager->flush();
+
 });
 
-$app->get('/book/img/{id}/{name}', function($id, $name, Request $request ) use ( $app ) {
+$app->get('user/bookadd', function () use ($app){    
+
+    return $app['twig']->render('book_add.twig', array(
+        'error' => ''
+    ));
+})
+->bind('book_add')
+;
+
+$app->get('user/book/img/{id}/{name}', function($id, $name, Request $request ) use ( $app ) {
     if ( !file_exists( $app['upload_folder'] . '/' . $id . '/' . $name ) )
     {
         throw new \Exception( 'File not found' );
@@ -56,3 +105,5 @@ $app->get('/book/img/{id}/{name}', function($id, $name, Request $request ) use (
 
     return $out;
 });
+
+

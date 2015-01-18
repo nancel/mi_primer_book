@@ -1,0 +1,26 @@
+{% extends "layout.twig" %}
+
+{% block title %}List books{% endblock %}
+
+{% block content %}
+
+    <h1>List books</h1>
+
+    {% for book in books %}
+        <div class="media">        
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{{ url('book', {id: book.path}) }}">
+                        {{ book.name }}
+                    </a>
+                </h4>                
+
+                <div class="text-muted">
+                    {{ book.path }}
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

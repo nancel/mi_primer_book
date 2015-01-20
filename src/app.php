@@ -48,6 +48,7 @@ $app['swiftmailer.options'] = array();
 
 $app['user.options'] = array(
     // ...
+    'isUsernameRequired' => true,
     'templates' => array(
         'layout' => 'layout.twig',
         'login' => 'login.twig',

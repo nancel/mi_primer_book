@@ -95,6 +95,33 @@ $app->get('user/bookadd', function () use ($app){
 ->bind('book_add')
 ;
 
+$app->post('user/useradd', function (Request $request) use ($app) {
+
+    $user_manager = $app['user.manager'];
+    
+    $user = $user_manager->createUser(
+        $request->request->get('email'),
+        $request->request->get('password'),
+        $request->request->get('name') ?: null
+    );
+
+    if ($username = $request->request->get('username')) {
+        $user->setUsername($username);
+    }
+    
+    $user_manager->insert($user);
+
+});
+
+$app->get('user/useradd', function () use ($app){    
+
+    return $app['twig']->render('user_add.twig', array(
+        'error' => ''
+    ));
+})
+->bind('user_add')
+;
+
 $app->get('user/book/img/{id}/{name}', function($id, $name, Request $request ) use ( $app ) {
     if ( !file_exists( $app['upload_folder'] . '/' . $id . '/' . $name ) )
     {

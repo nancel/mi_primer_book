@@ -14,3 +14,39 @@
   bottom: 0;
   margin: auto;
 }
+
+.prettyFile > input { display: none !important; }
+/*  The rest is from Twitter Bootstrap */
+input,
+.input-append { display: inline-block; vertica-align: middle; }
+ 
+.input-large {
+    border: 1px solid rgba(82, 168, 236, 0.8);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(82, 168, 236, .6);
+    border-radius: 3px 0 0 3px;
+    font-size: 14px;
+    height: 20px;
+    color: #555;
+    padding: 4px 6px;
+    margin-right: -4px;
+    width: 210px;
+}
+.btn-upload {
+    background-image: -webkit-linear-gradient(top, white, #E6E6E6);
+    background-repeat: repeat-x;
+    border: 1px solid rgba(0, 0, 0, 0.14902);
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.0470588) 0px 1px 2px 0px;
+    color: #333;
+    display: inline-block;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+    margin: 0 0 0 -1px;
+    padding: 4px 14px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: rgba(255, 255, 255, 0.74902) 0px 1px 1px;
+    vertical-align: top;
+    width: 47px;
+}

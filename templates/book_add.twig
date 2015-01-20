@@ -2,6 +2,41 @@
 
 {% block title %}List books{% endblock %}
 
+{% block head %}
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            if ($('.prettyFile').length) {
+                $('.prettyFile').each(function() {
+                    var pF          = $(this),
+                        fileInput   = pF.find('input[type="file"]');
+             
+                    fileInput.change(function() {
+                        // When original file input changes, get its value, show it in the fake input
+                        var files = fileInput[0].files,
+                            info  = '';
+                        if (files.length > 1) {
+                            // Display number of selected files instead of filenames
+                            info     = files.length + ' archivos seleccionados';
+                        } else {
+                            // Display filename (without fake path)
+                            var path = fileInput.val().split('\\');
+                            info     = path[path.length - 1];
+                        }
+             
+                        pF.find('.input-append input').val(info);
+                    });
+             
+                    pF.find('.input-append').click(function(e) {
+                        e.preventDefault();
+                        // Make as the real input was clicked
+                        fileInput.click();
+                    })
+                });
+            }
+        });        
+    </script>
+{% endblock %}
+
 {% block content %}
 
     <h1>
@@ -12,7 +47,7 @@
             <div class="alert alert-danger">{{ error|nl2br }}</div>
         {% endif %}
 
-        <form class="form-horizontal" method="POST">
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="input-name">nombre</label>
@@ -35,6 +70,17 @@
                         {% endfor %}   
                     </select>
                 </div>                    
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-name">Imágenes</label>
+                <div class="col-sm-8">
+                    <span class="prettyFile">
+                        <input type="file" name="files[]" multiple="multiple">
+                        <div class="input-append">
+                           <input class="form-control" type="text">
+                        </div>
+                    </span>
+                </div>                   
             </div>
 
             <div class="form-group">

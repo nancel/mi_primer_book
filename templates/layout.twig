@@ -14,7 +14,9 @@
         <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
         <script src="{{ app.request.basepath }}/js/bootstrap-image-gallery.min.js"></script>
 
-        <link rel="stylesheet" href="{{ app.request.basepath }}/css/styles.css"  />        
+        <link rel="stylesheet" href="{{ app.request.basepath }}/css/styles.css"  />     
+
+        {% block head %}{% endblock %}   
     </head>
     <body>
         <nav class="navbar navbar-default" role="navigation">

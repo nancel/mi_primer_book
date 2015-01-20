@@ -79,6 +79,12 @@ $app->post('user/bookadd', function (Request $request) use ($app) {
     $book->name = $request->get('name');
     $book->path = $request->get('path');
     $book->user_id = $request->get('userid');
+    
+    $files = $request->files->get('files');
+
+    foreach ($files as $file) {
+        $file->move($app['upload_folder'] . '/' . $book->path, $file->getClientOriginalName());
+    }
 
     $entity_manager = $app["orm.em"];
     $entity_manager->persist($book);

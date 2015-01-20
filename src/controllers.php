@@ -78,18 +78,25 @@ $app->post('user/bookadd', function (Request $request) use ($app) {
     $book = new Book();
     $book->name = $request->get('name');
     $book->path = $request->get('path');
-    $book->user_id = 1;
+    $book->user_id = $request->get('userid');
 
     $entity_manager = $app["orm.em"];
     $entity_manager->persist($book);
     $entity_manager->flush();
 
+    return $app->redirect('/user/books');
 });
 
 $app->get('user/bookadd', function () use ($app){    
+    $user_manager = $app['user.manager'];
+
+    $users = $user_manager->findBy(array(), array(
+            'order_by' => array('name', 'ASC'),
+    ));  
 
     return $app['twig']->render('book_add.twig', array(
-        'error' => ''
+        'error' => '',
+        'users' => $users
     ));
 })
 ->bind('book_add')
@@ -111,10 +118,11 @@ $app->post('user/useradd', function (Request $request) use ($app) {
     
     $user_manager->insert($user);
 
+    return $app->redirect('/user/list');
 });
 
-$app->get('user/useradd', function () use ($app){    
-
+$app->get('user/useradd', function () use ($app){ 
+ 
     return $app['twig']->render('user_add.twig', array(
         'error' => ''
     ));

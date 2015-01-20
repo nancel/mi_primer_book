@@ -26,6 +26,16 @@
                     <input class="form-control" name="path" type="text" id="input-path" placeholder="Carpeta">                    
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-name">Usuario</label>
+                <div class="col-sm-8">
+                    <select name="userid"  class="form-control">        
+                        {% for user in users %}
+                            <option value="{{ user.id }}" >{{ user.name }}</option>
+                        {% endfor %}   
+                    </select>
+                </div>                    
+            </div>
 
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-2">

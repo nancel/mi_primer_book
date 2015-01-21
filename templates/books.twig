@@ -4,7 +4,11 @@
 
 {% block content %}
 
-    <h1>List books</h1>
+    <h1>Lista books</h1>
+        
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="/user/bookadd"><span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Agregar nuevo</a>
+    {% endif %}
 
     {% for book in books %}
         <div class="media">        
@@ -15,9 +19,9 @@
                     </a>
                 </h4>                
 
-                <div class="text-muted">
+                {# <div class="text-muted">
                     {{ book.path }}
-                </div>
+                </div> #}
             </div>
         </div>
 

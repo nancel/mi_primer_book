@@ -50,3 +50,12 @@ input,
     vertical-align: top;
     width: 47px;
 }
+
+.watermark {
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  width: 50%;
+}

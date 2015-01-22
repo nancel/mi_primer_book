@@ -57,9 +57,10 @@ $app['user.options'] = array(
         'login' => 'login.twig',
         'login-confirmation-needed' => 'login-confirmation-needed.twig',
         'forgot-password' => 'forgot-password.twig',
-        'reset-password' => 'reset-password.twig',
+        'reset-password' => 'reset-password.twig',*/
         'view' => 'view.twig',
-        'edit' => 'edit.twig',
+        'list' => 'list.twig',
+         /* 'edit' => 'edit.twig',
         'list' => 'list.twig',*/
     ),
 );

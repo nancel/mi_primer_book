@@ -142,9 +142,37 @@ $app->get('user/book/img/{id}/{name}', function($id, $name, Request $request ) u
         throw new \Exception( 'File not found' );
     }
 
-    $out = new BinaryFileResponse($app['upload_folder'] . '/' . $id . '/' . $name );
+    $image = new Imagick();
+    $image->readImage($app['upload_folder'] . '/' . $id . '/' . $name);
 
-    return $out;
+    $watermark = new Imagick();
+    $watermark->readImage(__DIR__ . '/../web/images/watermark.png');
+ 
+    // how big are the images?
+    $iWidth = $image->getImageWidth();
+    $iHeight = $image->getImageHeight();
+    $wWidth = $watermark->getImageWidth();
+    $wHeight = $watermark->getImageHeight();
+ 
+    if ($iHeight < $wHeight || $iWidth < $wWidth) {
+        // resize the watermark
+        $watermark->scaleImage($iWidth, $iHeight);
+     
+        // get new size
+        $wWidth = $watermark->getImageWidth();
+        $wHeight = $watermark->getImageHeight();
+    }
+ 
+    // calculate the position
+    $x = ($iWidth - $wWidth) / 2;
+    $y = ($iHeight - $wHeight) / 2;
+     
+    $image->compositeImage($watermark, imagick::COMPOSITE_OVER, $x, $y);
+
+
+    header("Content-Type: image/" . $image->getImageFormat());
+    echo $image;
+
 });
 
 
